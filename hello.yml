@@ -6,3 +6,18 @@
     - name: Print hello message
       debug:
         msg: "Hello from AWX!"
+    
+    - name: Create a test file
+      file:
+        path: /tmp/awx_test.txt
+        content: "AWX test successful at {{ ansible_date_time.iso8601 }}"
+        state: touch
+      become: yes
+
+    - name: Check system uptime
+      shell: "uptime"
+      register: system_uptime
+
+    - name: Show uptime result
+      debug:
+        var: system_uptime.stdout
