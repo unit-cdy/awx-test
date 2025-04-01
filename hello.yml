@@ -14,15 +14,29 @@
         path: /tmp/awx_test.txt
         state: touch
       become: yes
+      when: inventory_hostname != "localhost"
 
     - name: Write to test file
       shell: "echo 'AWX test successful at $(date)' > /tmp/awx_test.txt"
       become: yes
+      when: inventory_hostname != "localhost"
 
     - name: Show file content
       command: "cat /tmp/awx_test.txt"
       register: file_content
+      when: inventory_hostname != "localhost"
 
     - name: Display file content
       debug:
         var: file_content.stdout
+      when: inventory_hostname != "localhost"
+
+    - name: Check system uptime
+      shell: "uptime"
+      register: system_uptime
+      when: inventory_hostname != "localhost"
+
+    - name: Show uptime result
+      debug:
+        var: system_uptime.stdout
+      when: inventory_hostname != "localhost"
