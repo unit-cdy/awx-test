@@ -1,29 +1,15 @@
 ---
 - name: Hello World Playbook
   hosts: all
-  gather_facts: yes  # 改为 yes 以收集主机信息
+  gather_facts: no  # 先改回 no
   tasks:
     - name: Print hello message
       debug:
         msg: "Hello from AWX!"
     
     - name: Create a test file
-      file:
-        path: /tmp/awx_test.txt
-        state: touch
-      become: yes
-
-    - name: Write to test file
       shell: "echo 'AWX test successful at $(date)' > /tmp/awx_test.txt"
       become: yes
-
-    - name: Check system uptime
-      shell: "uptime"
-      register: system_uptime
-
-    - name: Show uptime result
-      debug:
-        var: system_uptime.stdout
 
     - name: Cat test file content
       shell: "cat /tmp/awx_test.txt"
